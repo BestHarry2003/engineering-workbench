@@ -1,0 +1,2 @@
+# Optional dependency for SSH workstation features (Python 3.9+).
+paramiko>=3.5,<5

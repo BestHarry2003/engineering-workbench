@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="模型、远程计算与常用程序">
+  <title>工作台</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23101c2d'/%3E%3Cpath d='M16 16h14v14H16zm18 0h14v14H34zM16 34h14v14H16zm18 0h14v14H34z' fill='%23f0a63a'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/remote.css">
+  <link rel="stylesheet" href="/workbench-theme.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand-mark" aria-hidden="true">▦</div>
+      <div class="brand-copy">
+        <h1>工作台</h1>
+        <p>模型、远程计算与常用程序</p>
+      </div>
+      <div class="top-actions">
+        <nav class="view-nav" aria-label="工作区导航">
+          <button class="button ghost" data-view="home" aria-current="page">首页</button>
+          <button class="button ghost" data-view="abaqus">Abaqus</button>
+          <button class="button ghost" data-view="fluent">Fluent</button>
+          <button class="button ghost" data-view="pyrosim">PyroSim</button>
+          <button class="button ghost" data-view="remote">工作站</button>
+          <button class="button ghost" data-view="programs">脚本工作台</button>
+        </nav>
+      </div>
+    </header>
+
+    <main id="homeView" class="home-view">
+      <section class="home-launcher" aria-labelledby="homeTitle">
+        <div class="home-heading"><span class="home-monogram" aria-hidden="true">▦</span><div><p class="eyebrow">ENGINEERING WORKSPACE</p><h2 id="homeTitle">工作台</h2><p>选择专业工作台，开始模型与计算工作</p></div></div>
+        <div class="launch-grid workbench-grid">
+          <button class="launch-tile" data-home-action="abaqus">
+            <span class="tile-index" aria-hidden="true">01 / STRUCTURAL</span>
+            <svg class="tile-art" viewBox="0 0 240 180" fill="none" aria-hidden="true"><g stroke="currentColor" stroke-width="1"><path d="M120 14 215 64v78l-95 29-95-49V44Z M25 44l95 49 95-29M120 93v78"/><path d="M57 34l95 48v79M88 24l95 48v79M25 70l95 49 95-29M25 96l95 49 95-29M57 60v78M88 77v77M57 34l95 48M88 24l95 48M57 60l94-34M88 77l95-34"/></g><circle cx="120" cy="93" r="4" fill="currentColor"/></svg>
+            <span class="tile-icon" aria-hidden="true">A</span><strong>Abaqus 工作台</strong><span>CAE 模型 · ODB 后处理 · 远程 Job</span>
+          </button>
+          <button class="launch-tile" data-home-action="fluent">
+            <span class="tile-index" aria-hidden="true">02 / FLUID DYNAMICS</span>
+            <svg class="tile-art" viewBox="0 0 240 180" fill="none" aria-hidden="true"><g stroke="currentColor" stroke-width="1.2"><path d="M0 30C70 30 66 5 112 20s52 40 128 25M0 50c66 0 76-35 120-15s50 30 120 25M0 70c72 0 75-40 120-25s40 45 120 30M0 90c75 0 76-34 116-34s51 44 124 34M0 110c70 0 75 35 120 12s55-20 120-17M0 130c65 0 78 31 120 7s50-15 120-16M0 150c70 0 76 26 120 5s55-20 120-18"/><path d="M71 97c43-46 84-37 112 2-42-12-73-12-112-2Z" stroke-width="2"/></g></svg>
+            <span class="tile-icon" aria-hidden="true">F</span><strong>ANSYS Fluent 工作台</strong><span>Case 模型 · Data 结果 · 流体仿真</span>
+          </button>
+          <button class="launch-tile" data-home-action="pyrosim">
+            <span class="tile-index" aria-hidden="true">03 / FIRE SIMULATION</span>
+            <svg class="tile-art" viewBox="0 0 240 180" fill="none" aria-hidden="true"><g stroke="currentColor"><ellipse cx="125" cy="150" rx="100" ry="23"/><ellipse cx="125" cy="150" rx="75" ry="16"/><ellipse cx="125" cy="150" rx="48" ry="9"/><path d="M124 155c-66-15-58-65-30-87-3 24 7 26 10 30 3-25 30-48 24-80 45 39 17 58 33 76 7-9 10-20 8-28 44 51 18 88-45 89Z" stroke-width="1.8"/><path d="M125 153c-32-16-31-33-16-51-1 12 6 14 9 19 0-14 14-25 19-38 21 35 20 56-12 70Z"/></g></svg>
+            <span class="tile-icon" aria-hidden="true">P</span><strong>PyroSim 工作台</strong><span>PSM / FDS 模型 · SMV 结果 · 火灾模拟</span>
+          </button>
+          <button class="launch-tile" data-home-action="stations">
+            <span class="tile-index" aria-hidden="true">04 / COMPUTE NODES</span>
+            <svg class="tile-art" viewBox="0 0 240 180" fill="none" aria-hidden="true"><g stroke="currentColor" stroke-width="1.2"><path d="m65 26 90-12 35 22v112l-90 21-35-24Zm0 0 35 24 90-14M100 50v119M65 65l35 24 90-18M65 104l35 24 90-20M112 65l40-7M112 104l40-8M112 143l40-9M25 151l30 18h45M190 65l25 14v56l-25 13"/><circle cx="174" cy="54" r="3"/><circle cx="174" cy="92" r="3"/><circle cx="174" cy="131" r="3"/></g></svg>
+            <span class="tile-icon" aria-hidden="true">▥</span><strong>工作站</strong><span>SSH 连接 · 系统资源 · 计算任务</span>
+          </button>
+          <button class="launch-tile program-launch" data-home-action="programs"><span class="tile-icon" aria-hidden="true">CMD</span><span class="program-launch-copy"><strong>脚本工作台</strong><span>PDF 翻译 · 常用 CMD / BAT 脚本 · 本机服务</span></span></button>
+        </div>
+        <p class="home-footnote">模型分别管理，工作站与常用工具统一访问</p>
+      </section>
+    </main>
+
+    <main id="abaqusView" class="home-view hidden">
+      <section class="home-launcher" aria-labelledby="abaqusTitle">
+        <div class="home-heading"><span class="home-monogram" aria-hidden="true">A</span><div><p class="eyebrow">STRUCTURAL SIMULATION</p><h2 id="abaqusTitle">Abaqus 工作台</h2><p>模型索引、备注、快速启动与结果查看</p></div></div>
+        <div class="launch-grid">
+          <button class="launch-tile" data-home-action="cae"><span class="tile-icon" aria-hidden="true">CAE</span><strong>打开 CAE 文件</strong><span>选择模型，进入 Abaqus 建模</span></button>
+          <button class="launch-tile" data-home-action="odb"><span class="tile-icon" aria-hidden="true">ODB</span><strong>查看 ODB 结果</strong><span>载入模型文件夹中的全部工况</span></button>
+          <button class="launch-tile tile-accent" data-home-action="submit"><span class="tile-icon" aria-hidden="true">↗</span><strong>提交远程 Job</strong><span>选择 INP 或导出 CAE 中的 Job</span></button>
+          <button class="launch-tile" data-home-action="library"><span class="tile-icon" aria-hidden="true">▤</span><strong>模型库</strong><span>模型索引、标签与研究备注</span></button>
+          <button class="launch-tile" data-home-action="abaqus-settings"><span class="tile-icon" aria-hidden="true">⚙</span><strong>设置与迁移</strong><span>Abaqus 路径、索引导入导出</span></button>
+          <button class="launch-tile" data-home-action="jobs"><span class="tile-icon" aria-hidden="true">◷</span><strong>计算任务</strong><span>跟踪进度，自动取回 ODB</span></button>
+        </div>
+        <p class="home-footnote">现有 CAE 模型索引、备注与远程计算入口均保留</p>
+      </section>
+    </main>
+
+    <main id="engineeringView" class="hidden">
+      <div class="workbench-heading"><div><h2 id="engineeringTitle">专业工作台</h2><p id="engineeringDescription"></p></div><div class="workbench-actions"><button class="button secondary" id="engineeringSettings">软件设置</button><button class="button secondary hidden" id="engineeringFds">FDS 导入 / 转换</button><button class="button secondary" id="engineeringScan">扫描文件夹</button><button class="button primary" id="engineeringAdd">添加模型</button></div></div>
+      <p id="engineeringError" class="remote-message hidden" role="alert"></p>
+      <section class="toolbar" aria-label="专业模型筛选">
+        <label class="search-box"><span aria-hidden="true">⌕</span><input id="engineeringSearch" type="search" placeholder="搜索模型名称、备注、标签或路径" aria-label="搜索当前工作台模型"></label>
+        <label class="select-wrap"><span>状态</span><select id="engineeringStatus"><option value="all">全部状态</option><option value="planned">计划中</option><option value="in_progress">进行中</option><option value="validated">已验证</option><option value="archived">已归档</option></select></label>
+        <label class="favorite-filter"><input id="engineeringFavoriteOnly" type="checkbox">只看收藏</label>
+      </section>
+      <section class="stats engineering-stats" aria-label="当前工作台统计"><article class="stat-card"><span>模型总数</span><strong id="engineeringTotal">0</strong></article><article class="stat-card"><span>收藏模型</span><strong id="engineeringFavorites">0</strong></article><article class="stat-card"><span>文件缺失</span><strong id="engineeringMissing">0</strong></article></section>
+      <section class="workspace">
+        <div class="library-panel"><div class="panel-heading"><div><h2>模型索引</h2><p id="engineeringCount"></p></div><button class="icon-button" id="engineeringRefresh" aria-label="刷新当前工作台模型" title="刷新模型列表">↻</button></div><div id="engineeringList" class="model-list"></div></div>
+        <aside class="detail-panel" aria-label="专业模型详情">
+          <div id="engineeringEmpty" class="empty-detail"><div class="empty-symbol" id="engineeringSymbol">MODEL</div><h2>当前没有选中模型</h2><p>选择左侧模型以编辑备注、打开模型或查看结果。</p></div>
+          <form id="engineeringForm" class="detail-form hidden">
+            <div class="detail-head"><div><span class="eyebrow">模型详情</span><h2 id="engineeringFileName"></h2></div><button type="button" class="star-button" id="engineeringFavorite" aria-label="收藏模型" aria-pressed="false">☆</button></div>
+            <p id="engineeringFileNotice" class="remote-message hidden"></p>
+            <label class="field"><span>模型名称</span><input id="engineeringName" required></label>
+            <label class="field"><span>研究状态</span><select id="engineeringState"><option value="planned">计划中</option><option value="in_progress">进行中</option><option value="validated">已验证</option><option value="archived">已归档</option></select></label>
+            <label class="field"><span>标签</span><input id="engineeringTags" placeholder="多个标签用逗号分隔"></label>
+            <label class="field"><span>备注</span><textarea id="engineeringNotes" rows="5"></textarea></label>
+            <div class="path-card"><span>模型文件</span><code id="engineeringPath"></code><div class="path-meta" id="engineeringMeta"></div></div>
+            <div class="remote-fields" id="fluentLaunchOptions"><label class="field"><span>Fluent 维度 / 精度</span><select id="engineeringMode"><option value="3ddp">3D · 双精度</option><option value="2ddp">2D · 双精度</option><option value="3d">3D · 单精度</option><option value="2d">2D · 单精度</option></select></label><label class="field"><span>启动 CPU 数</span><input id="engineeringCpus" type="number" min="1" max="128" value="1"></label></div>
+            <label class="field"><span id="engineeringResultsLabel">同文件夹结果</span><select id="engineeringResult"></select><small id="engineeringResultHelp"></small></label>
+            <div class="detail-actions"><button class="button primary" type="button" id="engineeringOpen">打开模型</button><button class="button secondary" type="button" id="engineeringOpenResults">查看结果</button><button class="button secondary" type="button" id="engineeringReveal">定位文件</button><button class="button save" type="submit" id="engineeringSave">保存备注</button></div>
+            <button class="remove-record" type="button" id="engineeringRemove">移除记录（保留原文件）</button>
+          </form>
+        </aside>
+      </section>
+    </main>
+
+    <main id="programsView" class="remote-view hidden">
+      <div class="remote-page-heading"><div><p class="eyebrow">SCRIPT WORKSPACE</p><h2>脚本工作台</h2><p>把常用 CMD / BAT 脚本放在这里，不用再翻找项目文件夹。</p></div><button class="button primary" id="addProgram">添加程序</button></div>
+      <p id="programError" class="remote-message hidden" role="alert"></p>
+      <div id="programList" class="station-grid"></div>
+      <p class="remote-help">后台服务持续运行是正常状态。配置服务地址后，工作台会检查是否就绪，并提供页面入口；重启工作台后也能识别已就绪的服务。普通脚本只跟踪本次会话内的进程。移除入口不会删除脚本或停止程序。</p>
+    </main>
+
+    <main id="remoteView" class="remote-view hidden">
+      <div class="remote-page-heading"><div><p class="eyebrow">WORKSTATIONS &amp; COMPUTING</p><h2>工作站与计算任务</h2><p>共享 SSH 工作站与资源监测；当前远程提交支持 Abaqus Job。</p></div><button class="button secondary" id="refreshRemote">刷新任务状态</button></div>
+      <p id="remoteError" class="remote-message hidden" role="alert"></p>
+      <section class="remote-section" id="stationsSection" aria-labelledby="stationsTitle">
+        <div class="section-title"><h3 id="stationsTitle">工作站</h3><button class="button secondary" id="addStation">添加工作站</button></div>
+        <div id="stationList" class="station-grid"></div>
+      </section>
+      <section class="remote-section" id="submitSection" aria-labelledby="submitTitle">
+        <h3 id="submitTitle">提交 Abaqus 计算</h3>
+        <form id="remoteSubmitForm">
+          <div class="remote-fields">
+            <label class="field"><span>模型（结果保存到其所在文件夹）</span><select id="remoteModel" required></select></label>
+            <label class="field"><span>目标工作站</span><select id="remoteStation" required></select></label>
+            <label class="field"><span>输入来源</span><select id="remoteSource"><option value="inp">已有 INP 文件</option><option value="cae">CAE 中已有的 Job</option></select></label>
+            <label class="field" id="inputChoiceField"><span>同文件夹的 INP 文件</span><select id="remoteInput"></select></label>
+            <div class="field hidden" id="caeChoiceField"><label for="remoteCaeJob">CAE Job</label><div class="input-action"><select id="remoteCaeJob"></select><button class="button secondary" type="button" id="readCaeJobs">读取 Job</button></div><small id="caeJobFeedback">需要本机 Abaqus/CAE 许可。仅导出输入，不运行本地求解。</small></div>
+            <label class="field"><span>远程 Job 名</span><input id="remoteJobName" required pattern="[A-Za-z][A-Za-z0-9_]{0,79}" placeholder="例如 Job_1" maxlength="80"></label>
+            <label class="field"><span>求解 CPU 数</span><input id="remoteCpus" type="number" min="1" max="4096" value="4" required></label>
+          </div>
+          <details class="remote-advanced"><summary>附加依赖与用户子程序（可选）</summary><p>INP 中的 INPUT / FILE 引用会检查并上传。使用文件夹内的相对路径；其他依赖请逐行补充。CAE 自动导出暂不支持外部文件引用，此时请改用已有 INP。</p><div class="remote-fields"><label class="field"><span>附加文件（每行一个相对路径）</span><textarea id="remoteExtraFiles" rows="3" placeholder="materials.inc&#10;data/table.txt"></textarea></label><label class="field"><span>用户子程序（需工作站编译环境）</span><input id="remoteUserFile" placeholder="例如 umat.for"></label></div></details>
+          <div class="submit-footer"><p id="remoteOutput">结果不会覆盖已有 ODB；同名文件将另存。保持本程序运行可自动取回结果。</p><button class="button primary" id="submitRemoteJob" type="submit">提交远程计算</button></div>
+        </form>
+      </section>
+      <section class="remote-section" id="jobsSection" aria-labelledby="jobsTitle"><h3 id="jobsTitle">计算任务</h3><p class="remote-help">远端计算独立运行；本程序关闭时暂停检查，重新打开后继续取回结果。没有收到启动回执时不会重复提交。</p><div id="remoteJobList" aria-live="polite"></div></section>
+    </main>
+
+    <main id="libraryView" class="hidden">
+      <div class="workbench-heading"><div><h2>Abaqus 模型库</h2><p>CAE 模型索引与 ODB 后处理</p></div><div class="workbench-actions"><button class="button secondary" id="openSettings">设置与迁移</button><button class="button secondary" id="scanFolder">扫描文件夹</button><button class="button primary" id="addModel">添加 CAE 模型</button></div></div>
+      <section class="toolbar" aria-label="模型筛选">
+        <label class="search-box">
+          <span aria-hidden="true">⌕</span>
+          <input id="searchInput" type="search" placeholder="搜索模型名称、备注、标签或路径" autocomplete="off">
+        </label>
+        <label class="select-wrap">
+          <span>状态</span>
+          <select id="statusFilter">
+            <option value="all">全部状态</option>
+            <option value="planned">计划中</option>
+            <option value="in_progress">进行中</option>
+            <option value="validated">已验证</option>
+            <option value="archived">已归档</option>
+          </select>
+        </label>
+        <label class="favorite-filter">
+          <input id="favoriteFilter" type="checkbox">
+          <span>只看收藏</span>
+        </label>
+      </section>
+
+      <section class="stats" aria-label="模型库概览">
+        <article class="stat-card" data-stat="total"><span>模型总数</span><strong id="statTotal">0</strong></article>
+        <article class="stat-card" data-stat="favorites"><span>收藏模型</span><strong id="statFavorites">0</strong></article>
+        <article class="stat-card" data-stat="missing"><span>文件缺失</span><strong id="statMissing">0</strong></article>
+        <article class="stat-card" data-stat="unsafe"><span>命名待检查</span><strong id="statUnsafe">0</strong></article>
+      </section>
+
+      <section class="workspace">
+        <div class="library-panel">
+          <div class="panel-heading">
+            <div>
+              <h2>模型索引</h2>
+              <p id="resultCount">正在读取…</p>
+            </div>
+            <div class="panel-actions">
+              <label class="select-all" title="全选当前筛选结果">
+                <input id="selectAllModels" type="checkbox" disabled>
+                <span>全选</span>
+              </label>
+              <span class="selection-count" id="selectionCount" aria-live="polite"></span>
+              <button class="text-button danger" id="removeSelected" type="button" disabled title="仅从模型索引移除，不删除 CAE 文件">批量移除</button>
+              <button class="icon-button" id="refreshModels" type="button" title="刷新模型列表" aria-label="刷新模型列表">↻</button>
+            </div>
+          </div>
+          <div id="modelList" class="model-list" aria-live="polite"></div>
+        </div>
+
+        <aside class="detail-panel" id="detailPanel" aria-label="模型详情">
+          <div class="empty-detail" id="emptyDetail">
+            <div class="empty-symbol">CAE</div>
+            <h2>当前没有选中模型</h2>
+            <p>从左侧模型索引选择一个模型，查看 CAE 文件信息、编辑备注或启动 Abaqus。</p>
+          </div>
+
+          <form id="detailForm" class="detail-form hidden">
+            <div class="detail-head">
+              <div>
+                <span class="eyebrow">模型详情</span>
+                <h2 id="detailFileName"></h2>
+              </div>
+              <button type="button" class="star-button" id="favoriteButton" aria-label="收藏模型" aria-pressed="false" title="收藏模型">☆</button>
+            </div>
+
+            <div id="fileNotice" class="file-notice" role="status" aria-live="polite"></div>
+
+            <label class="field">
+              <span>模型名称</span>
+              <input id="titleInput" name="title" required maxlength="120">
+            </label>
+
+            <label class="field">
+              <span>研究状态</span>
+              <select id="statusInput" name="status">
+                <option value="planned">计划中</option>
+                <option value="in_progress">进行中</option>
+                <option value="validated">已验证</option>
+                <option value="archived">已归档</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span>标签</span>
+              <input id="tagsInput" name="tags" placeholder="例如：项目A, 工况1">
+              <small>多个标签用逗号分隔</small>
+            </label>
+
+            <label class="field">
+              <span>备注</span>
+              <textarea id="notesInput" name="notes" rows="7" placeholder="记录模型目的、关键参数、边界条件和待验证问题…"></textarea>
+            </label>
+
+            <div class="path-card">
+              <span>CAE 文件</span>
+              <code id="detailPath"></code>
+              <span>工作目录</span>
+              <code id="detailFolder"></code>
+              <div class="path-meta" id="detailMeta"></div>
+            </div>
+
+            <div class="detail-actions">
+              <button type="button" class="button primary launch" id="openModel">打开模型</button>
+              <button type="button" class="button secondary" id="openResults" title="在 Abaqus Viewer 中只读加载同文件夹内的全部 ODB，不搜索子文件夹">查看全部 ODB</button>
+              <button type="button" class="button secondary" id="revealModel">定位文件</button>
+              <button type="submit" class="button save">保存备注</button>
+            </div>
+            <button type="button" class="remove-record" id="removeRecord">仅移除这条记录</button>
+          </form>
+        </aside>
+      </section>
+    </main>
+  </div>
+
+  <dialog class="settings-dialog" id="settingsDialog">
+    <div class="settings-head">
+      <div>
+        <span class="eyebrow">便携版设置</span>
+        <h2>环境、迁移与备份</h2>
+      </div>
+      <button class="dialog-close" id="closeSettings" aria-label="关闭设置">×</button>
+    </div>
+
+    <section class="settings-section">
+      <div class="section-title">
+        <h3>运行环境</h3>
+        <button class="text-button" id="refreshSystem">重新检测</button>
+      </div>
+      <div class="system-grid">
+        <article class="system-card">
+          <span class="health-dot" id="pythonDot"></span>
+          <div><strong>Python</strong><p id="pythonStatus">正在检测…</p></div>
+        </article>
+        <article class="system-card">
+          <span class="health-dot" id="abaqusDot"></span>
+          <div><strong>Abaqus</strong><p id="abaqusStatus">正在检测…</p></div>
+        </article>
+      </div>
+      <label class="field">
+        <span>Abaqus 启动文件</span>
+        <div class="input-action">
+          <input id="abaqusPath" placeholder="请选择 abaqus.bat">
+          <button class="button secondary" type="button" id="chooseAbaqus">选择</button>
+          <button class="button save" type="button" id="saveAbaqus">保存</button>
+        </div>
+      </label>
+    </section>
+
+    <section class="settings-section">
+      <div class="section-title">
+        <div><h3>模型路径迁移</h3><p>模型复制到新电脑或盘符改变后，批量更新链接。</p></div>
+      </div>
+      <label class="field">
+        <span>旧模型根目录</span>
+        <div class="input-action two">
+          <input id="oldRoot" placeholder="选择迁移前的文件夹">
+          <button class="button secondary" type="button" data-pick-folder="oldRoot">选择</button>
+        </div>
+      </label>
+      <label class="field">
+        <span>新模型根目录</span>
+        <div class="input-action two">
+          <input id="newRoot" placeholder="选择迁移后的文件夹">
+          <button class="button secondary" type="button" data-pick-folder="newRoot">选择</button>
+        </div>
+      </label>
+      <button class="button migration" type="button" id="remapPaths">批量替换模型路径</button>
+    </section>
+
+    <section class="settings-section">
+      <div class="section-title">
+        <div><h3>模型索引与便携包</h3><p>导出模型索引，或打包工作台、配置和模型索引。</p></div>
+      </div>
+      <div class="migration-actions">
+        <button class="button secondary" type="button" id="exportMetadata">导出模型索引</button>
+        <button class="button secondary" type="button" id="importMetadata">导入模型索引</button>
+        <button class="button primary" type="button" id="createPackage">生成便携 ZIP</button>
+      </div>
+      <p class="settings-note">ZIP 包会包含当前模型索引和备注，但不会复制 CAE/ODB 文件。换电脑后若目录不同，请使用上方“模型路径迁移”。</p>
+    </section>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <dialog id="stationDialog" class="station-dialog">
+    <form id="stationForm">
+      <div class="section-title"><h2 id="stationDialogTitle">添加工作站</h2><button class="icon-button" type="button" id="closeStationDialog" aria-label="关闭工作站设置">×</button></div>
+      <input id="stationId" type="hidden">
+      <div class="remote-fields">
+        <label class="field"><span>名称</span><input id="stationName" required placeholder="计算工作站"></label>
+        <label class="field"><span>IP / 主机名</span><input id="stationHost" required placeholder="workstation.example.com"></label>
+        <label class="field"><span>SSH 用户名</span><input id="stationUsername" required autocomplete="off"></label>
+        <label class="field"><span>SSH 端口</span><input id="stationPort" type="number" min="1" max="65535" value="22" required></label>
+        <label class="field"><span>密码（留空保留已保存密码）</span><input id="stationPassword" type="password" autocomplete="new-password"></label>
+        <label class="field"><span>本机 SSH 私钥路径（可选）</span><input id="stationKeyFile" placeholder="C:\Users\用户名\.ssh\id_ed25519"></label>
+        <label class="field"><span>远端 Abaqus 命令绝对路径</span><input id="stationAbaqus" value="/usr/bin/abaqus" required></label>
+        <label class="field"><span>远端任务根目录</span><input id="stationRoot" value="~/abaqus-manager-runs" required></label>
+      </div>
+      <label class="favorite-filter"><input type="checkbox" id="stationClearPassword">清除已保存密码</label>
+      <p class="remote-help">密码使用当前 Windows 用户加密保存，不随便携包导出。更换电脑后需重新输入。</p>
+      <p id="stationFormError" class="remote-message hidden" role="alert"></p>
+      <div class="dialog-actions"><button class="button primary" id="saveStation" type="submit">保存工作站</button></div>
+    </form>
+  </dialog>
+  <script src="/app.js"></script>
+  <script src="/remote.js"></script>
+  <dialog id="programDialog" class="station-dialog">
+    <form id="programForm">
+      <div class="section-title"><h2 id="programDialogTitle">添加程序</h2><button class="icon-button" type="button" id="closeProgramDialog" aria-label="关闭程序设置">×</button></div>
+      <input id="programId" type="hidden">
+      <label class="field"><span>程序名称</span><input id="programName" maxlength="100" required placeholder="例如 PDF 翻译服务"></label>
+      <label class="field"><span>CMD / BAT 文件路径</span><div class="input-action"><input id="programPath" required placeholder="选择脚本或粘贴完整路径"><button class="button secondary" id="chooseProgram" type="button">选择文件</button></div></label>
+      <label class="field"><span>本机服务页面（可选）</span><input id="programWebUrl" type="url" placeholder="http://127.0.0.1:8890/"></label>
+      <label class="field"><span>健康检查地址（可选，留空则检查服务页面）</span><input id="programHealthUrl" type="url" placeholder="http://127.0.0.1:8890/health"></label>
+      <p class="remote-help">仅添加你信任的本机脚本。启动时以脚本所在文件夹作为工作目录；需要终端输入的交互脚本请自行打开。</p>
+      <p id="programFormError" class="remote-message hidden" role="alert"></p>
+      <div class="dialog-actions"><button class="button primary" id="saveProgram" type="submit">保存入口</button></div>
+    </form>
+  </dialog>
+  <dialog id="programLogDialog" class="station-dialog">
+    <div class="section-title"><h2 id="programLogTitle">最近启动日志</h2><button class="icon-button" id="closeProgramLog" aria-label="关闭日志">×</button></div>
+    <p class="remote-help">显示日志末尾最多 32 KB，关闭后再次打开可更新。</p>
+    <pre id="programLogContent"></pre>
+  </dialog>
+  <script src="/programs.js"></script>
+  <dialog id="engineeringSettingsDialog" class="station-dialog">
+    <form id="engineeringSettingsForm"><div class="section-title"><h2>专业软件设置</h2><button class="icon-button" type="button" id="engineeringCloseSettings" aria-label="关闭软件设置">×</button></div>
+      <p class="remote-help">自动检测本机安装，也可指定版本。仅启动软件并读取文件，不自动求解；需要相应软件许可。</p>
+      <label class="field" data-engineering-config="fluent"><span>Fluent · fluent.exe</span><div class="input-action"><input id="fluentExecutable"><button class="button secondary" type="button" data-pick-engineering="fluent">选择</button></div></label>
+      <label class="field" data-engineering-config="pyrosim"><span>PyroSim · PyroSim.exe</span><div class="input-action"><input id="pyrosimExecutable"><button class="button secondary" type="button" data-pick-engineering="pyrosim">选择</button></div></label>
+      <label class="field" data-engineering-config="pyrosimResults"><span>结果查看器 · PyroSimResults.exe</span><div class="input-action"><input id="pyrosimResultsExecutable"><button class="button secondary" type="button" data-pick-engineering="pyrosimResults">选择</button></div></label>
+      <p id="engineeringSettingsError" class="remote-message hidden" role="alert"></p>
+      <div class="dialog-actions"><button class="button primary" type="submit" id="engineeringSaveSettings">保存软件设置</button></div>
+    </form>
+  </dialog>
+  <dialog id="fdsDialog" class="station-dialog" aria-labelledby="fdsTitle">
+    <div class="section-title"><h2 id="fdsTitle">FDS 导入 / 兼容转换</h2><button type="button" class="icon-button" id="fdsClose" aria-label="关闭 FDS 转换">×</button></div>
+    <p class="remote-help">PSM 是 PyroSim 工程文件；FDS 需要从「文件 → 导入 FDS/CAD 文件」导入，再另存为 PSM。转换只规范文本，不删参数、不改变仿真设置，也不自动求解。</p>
+    <button type="button" class="button secondary" id="fdsChoose">选择 FDS 并检查</button>
+    <p id="fdsError" class="remote-message hidden" role="alert"></p>
+    <section id="fdsReport" class="hidden" aria-live="polite">
+      <p id="fdsSource" class="fds-path"></p><p id="fdsSummary"></p>
+      <h3>自动调整</h3><ul id="fdsChanges"></ul>
+      <h3>检查结果与注意事项</h3><ul id="fdsIssues"></ul>
+      <details><summary>文本预览（前 6000 字符，请核对中文）</summary><pre id="fdsPreview" class="fds-preview"></pre></details>
+      <p id="fdsOutput" class="fds-path"></p>
+      <p class="remote-help">副本和转换报告保存在原文件同一文件夹，保留相对路径含义。兼容副本不代表已经通过 PyroSim 验证；导入时仍需检查警告。</p>
+    </section>
+    <div class="dialog-actions fds-actions">
+      <button type="button" class="button primary" id="fdsConvert" disabled>生成兼容副本</button>
+      <button type="button" class="button secondary" id="fdsCopy" disabled>复制导入路径</button>
+      <button type="button" class="button secondary" id="fdsLaunch" disabled>启动 PyroSim</button>
+    </div>
+  </dialog>
+  <script src="/engineering.js"></script>
+  <script src="/fds.js"></script>
+</body>
+</html>

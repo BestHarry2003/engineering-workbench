@@ -1,0 +1,17 @@
+data/
+backups/
+exports/
+logs/
+.sites-runtime/
+.venv/
+build/
+release/
+__pycache__/
+*.py[cod]
+*.log
+*.tmp
+*.bak
+*.db
+*.db-*
+*.exe
+*.zip
