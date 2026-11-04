@@ -2,6 +2,9 @@
 
 面向本地工程计算的统一入口：Abaqus、ANSYS Fluent、PyroSim、SSH 工作站和 CMD/BAT 脚本工作台。
 
+1.0.1：Fluent 和 PyroSim 模型库新增与 Abaqus 一致的复选、全选和批量移除。
+全选仅作用于当前筛选结果；移除前需要确认，只移除索引，保留模型和结果文件。
+
 ## 使用
 
 1. 下载 Release 中的 `Workbench.exe`，双击启动。

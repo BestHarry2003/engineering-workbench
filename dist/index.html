@@ -85,7 +85,18 @@
       </section>
       <section class="stats engineering-stats" aria-label="当前工作台统计"><article class="stat-card"><span>模型总数</span><strong id="engineeringTotal">0</strong></article><article class="stat-card"><span>收藏模型</span><strong id="engineeringFavorites">0</strong></article><article class="stat-card"><span>文件缺失</span><strong id="engineeringMissing">0</strong></article></section>
       <section class="workspace">
-        <div class="library-panel"><div class="panel-heading"><div><h2>模型索引</h2><p id="engineeringCount"></p></div><button class="icon-button" id="engineeringRefresh" aria-label="刷新当前工作台模型" title="刷新模型列表">↻</button></div><div id="engineeringList" class="model-list"></div></div>
+        <div class="library-panel">
+          <div class="panel-heading">
+            <div><h2>模型索引</h2><p id="engineeringCount"></p></div>
+            <div class="panel-actions">
+              <label class="select-all" title="全选当前筛选结果"><input id="engineeringSelectAll" type="checkbox" disabled><span>全选</span></label>
+              <span class="selection-count" id="engineeringSelectionCount" aria-live="polite"></span>
+              <button class="text-button danger" id="engineeringRemoveSelected" type="button" disabled title="仅从模型索引移除，不删除模型和结果文件">批量移除</button>
+              <button class="icon-button" id="engineeringRefresh" type="button" aria-label="刷新当前工作台模型" title="刷新模型列表">↻</button>
+            </div>
+          </div>
+          <div id="engineeringList" class="model-list"></div>
+        </div>
         <aside class="detail-panel" aria-label="专业模型详情">
           <div id="engineeringEmpty" class="empty-detail"><div class="empty-symbol" id="engineeringSymbol">MODEL</div><h2>当前没有选中模型</h2><p>选择左侧模型以编辑备注、打开模型或查看结果。</p></div>
           <form id="engineeringForm" class="detail-form hidden">

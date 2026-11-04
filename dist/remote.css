@@ -9,9 +9,7 @@
 .workbench-heading p { margin: 0; color: var(--muted); font-size: .8rem; }
 .workbench-actions { display: flex; gap: .5rem; flex-wrap: wrap; }
 .engineering-stats { grid-template-columns: repeat(3,minmax(0,1fr)); }
-.engineering-model { width: 100%; border: 0; border-bottom: 1px solid var(--line-soft); background: var(--surface); padding: .9rem; display: flex; gap: .7rem; align-items: center; text-align: left; color: var(--ink); }
-.engineering-model:hover { background: var(--surface-hover); }
-.engineering-model.selected { background: var(--surface-selected); box-shadow: inset 3px 0 var(--blue); }
+.engineering-model { width: 100%; min-width: 0; border: 0; background: transparent; padding: 0; display: flex; gap: .7rem; align-items: center; text-align: left; color: var(--ink); }
 .engineering-model:focus-visible { outline-offset: -3px; }
 .engineering-file-icon { flex: 0 0 40px; height: 40px; display: grid; place-items: center; background: var(--navy); color: var(--amber); border-radius: var(--radius-sm); font-size: .7rem; font-weight: bold; }
 .engineering-model-text { flex: 1; min-width: 0; }

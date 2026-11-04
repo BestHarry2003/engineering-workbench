@@ -1,5 +1,6 @@
 """Temporary catalogs/files only; Fluent/PyroSim processes are mocked."""
 import tempfile
+import sqlite3
 import unittest
 import sys
 from pathlib import Path
@@ -49,6 +50,45 @@ class EngineeringTests(unittest.TestCase):
         with patch('engineering_workbenches.subprocess.Popen') as launch:
             with self.assertRaises(ValueError): self.manager.launch('fluent',model,{})
             launch.assert_not_called()
+
+    def test_batch_remove_is_scoped_deduplicated_and_keeps_files(self):
+        fluent = self.manager.add('fluent',str(self.case))['id']
+        pyro = self.manager.add('pyrosim',str(self.psm))['id']
+        fds = self.models/'input.fds'; fds.write_bytes(b'original-fds')
+        fds_id = self.manager.add('pyrosim',str(fds))['id']
+        result = self.models/'fire.smv'; result.write_bytes(b'original-result')
+        with patch('engineering_workbenches.subprocess.Popen') as launch:
+            self.assertEqual(self.manager.remove_many('fluent',[fluent,fluent,pyro,'absent']),{'deleted':1})
+            self.assertEqual(len(self.manager.list('pyrosim')),2)
+            self.assertEqual(self.manager.remove_many('fluent',[fluent]),{'deleted':0})
+            self.assertEqual(self.manager.remove_many('pyrosim',[pyro,fds_id]),{'deleted':2})
+            launch.assert_not_called()
+        self.assertEqual(self.manager.list('fluent'),[])
+        self.assertEqual(self.manager.list('pyrosim'),[])
+        for path, expected in ((self.case,b'original-case'),(self.psm,b'original-psm'),
+                               (fds,b'original-fds'),(result,b'original-result')):
+            self.assertEqual(path.read_bytes(),expected)
+
+    def test_batch_validation_precedes_any_delete(self):
+        model = self.manager.add('fluent',str(self.case))['id']
+        for invalid in (None,{},'not-a-list',[],[model,None],[model,False],[model,2],[model,' '],[model,{}]):
+            with self.subTest(invalid=invalid),self.assertRaises(ValueError):
+                self.manager.remove_many('fluent',invalid)
+            self.assertEqual(len(self.manager.list('fluent')),1)
+        with self.assertRaises(ValueError): self.manager.remove_many('unknown',[model])
+
+    def test_batch_database_error_rolls_back_entire_operation(self):
+        first = self.manager.add('fluent',str(self.case))['id']
+        another = self.models/'another.cas'; another.write_bytes(b'another')
+        second = self.manager.add('fluent',str(another))['id']
+        with self.manager.db() as db:
+            db.execute("CREATE TRIGGER block_second BEFORE DELETE ON models WHEN OLD.title='another' "
+                       "BEGIN SELECT RAISE(ABORT,'test failure'); END")
+        with self.assertRaises(sqlite3.DatabaseError):
+            self.manager.remove_many('fluent',[first,second])
+        self.assertEqual(len(self.manager.list('fluent')),2)
+        with self.manager.db() as db:
+            self.assertEqual(db.execute('PRAGMA integrity_check').fetchone()[0],'ok')
 
     def test_fluent_launch_only_reads_case_and_selected_data(self):
         model=self.manager.add('fluent',str(self.case))['id']

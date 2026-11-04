@@ -1167,6 +1167,8 @@ class AppHandler(BaseHTTPRequestHandler):
             result = ENGINEERING.update(kind, payload.get("id"), payload.get("changes", {}))
         elif action == "remove":
             result = ENGINEERING.remove(kind, payload.get("id"))
+        elif action == "batch-delete":
+            result = ENGINEERING.remove_many(kind, payload.get("ids"))
         elif action == "open":
             result = ENGINEERING.launch(kind, payload.get("id"), payload)
         elif action == "reveal":

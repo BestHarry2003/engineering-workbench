@@ -186,6 +186,21 @@ class EngineeringWorkbenches:
             db.execute('DELETE FROM models WHERE id=? AND kind=?',(identifier,kind))
         return {'ok':True}
 
+    def remove_many(self, kind, identifiers):
+        """Remove only this workbench's index records, in one transaction."""
+        kind_check(kind)
+        if not isinstance(identifiers, list) or not identifiers:
+            raise ValueError('请选择要移除的模型索引')
+        if any(not isinstance(value, str) or not value.strip() for value in identifiers):
+            raise ValueError('模型索引 ID 必须是非空字符串')
+        identifiers = list(dict.fromkeys(identifiers))
+        with self.db() as db:
+            before = db.total_changes
+            db.executemany('DELETE FROM models WHERE id=? AND kind=?',
+                           [(identifier, kind) for identifier in identifiers])
+            deleted = db.total_changes - before
+        return {'deleted': deleted}
+
     def results(self, kind, identifier):
         model = self.get(kind,identifier)
         path = Path(model['path'])

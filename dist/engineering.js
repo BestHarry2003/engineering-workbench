@@ -1,4 +1,4 @@
-const engineering = { kind:null, models:[], selectedId:null, software:{}, request:0, selection:0, busy:false };
+const engineering = { kind:null, models:[], selectedId:null, selectedIds:new Set(), software:{}, request:0, selection:0, busy:false };
 const engineeringNames = { fluent:'ANSYS Fluent', pyrosim:'PyroSim' };
 const engineeringDrafts = new Map();
 
@@ -14,9 +14,11 @@ async function loadEngineering(kind = engineering.kind) {
   engineering.kind = kind;
   if (changed) {
     engineering.models = []; engineering.selectedId = null;
+    engineering.selectedIds.clear();
     $('#engineeringSearch').value = ''; $('#engineeringStatus').value = 'all'; $('#engineeringFavoriteOnly').checked = false;
     $('#engineeringForm').reset(); clearEngineeringDetail();
     $('#engineeringList').replaceChildren();
+    syncEngineeringSelectionControls();
   }
   $('#engineeringTitle').textContent = `${engineeringNames[kind]} 工作台`;
   $('#engineeringDescription').textContent = kind === 'fluent' ? 'Case 模型索引、研究备注与 Data 结果查看' : 'PSM / FDS 模型索引、兼容转换与 SMV 结果查看';
@@ -41,18 +43,41 @@ function filteredEngineeringModels() {
 
 function renderEngineering() {
   const visible = filteredEngineeringModels();
+  const visibleIds = new Set(visible.map(model=>model.id));
+  engineering.selectedIds = new Set([...engineering.selectedIds].filter(id=>visibleIds.has(id)));
   if (!visible.some(model => model.id === engineering.selectedId)) engineering.selectedId = visible[0]?.id || null;
   $('#engineeringTotal').textContent = engineering.models.length;
   $('#engineeringFavorites').textContent = engineering.models.filter(m=>m.favorite).length;
   $('#engineeringMissing').textContent = engineering.models.filter(m=>!m.exists).length;
   $('#engineeringMissing').closest('.stat-card').classList.toggle('has-issue',engineering.models.some(m=>!m.exists));
   $('#engineeringCount').textContent = `显示 ${visible.length} / ${engineering.models.length} 个模型`;
-  $('#engineeringList').innerHTML = visible.map(model=>`<button type="button" class="engineering-model ${model.id === engineering.selectedId ? 'selected' : ''}" data-engineering-id="${model.id}" aria-pressed="${model.id === engineering.selectedId}">
+  $('#engineeringList').innerHTML = visible.map(model=>`<article class="model-card engineering-row ${model.id === engineering.selectedId ? 'selected' : ''} ${engineering.selectedIds.has(model.id) ? 'checked' : ''}">
+    <input class="model-select" type="checkbox" data-engineering-check="${model.id}" aria-label="选择 ${escapeHtml(model.title)}">
+    <button type="button" class="engineering-model" data-engineering-id="${model.id}" aria-pressed="${model.id === engineering.selectedId}">
     <span class="engineering-file-icon" aria-hidden="true">${engineering.kind === 'fluent' ? 'CAS' : model.path.toLowerCase().endsWith('.fds') ? 'FDS' : 'PSM'}</span>
     <span class="engineering-model-text"><strong>${escapeHtml(model.title)}${model.favorite ? ' ★' : ''}</strong><small>${escapeHtml(model.path)}</small>${model.tags ? `<small>${escapeHtml(model.tags)}</small>` : ''}</span>
-    <span class="status-chip ${model.exists ? model.status : 'missing'}">${model.exists ? statusLabels[model.status] : '文件缺失'}</span></button>`).join('') ||
+    <span class="status-chip ${model.exists ? model.status : 'missing'}">${model.exists ? statusLabels[model.status] : '文件缺失'}</span></button></article>`).join('') ||
     `<div class="empty-list"><strong>${engineering.models.length ? '当前筛选没有结果' : '还没有模型索引'}</strong><p>${engineering.models.length ? '请调整搜索或筛选条件。' : '添加模型文件，或扫描文件夹建立索引。'}</p></div>`;
+  syncEngineeringSelectionControls();
   fillEngineeringDetail();
+}
+
+function syncEngineeringSelectionControls() {
+  const visible = filteredEngineeringModels();
+  const count = visible.filter(model=>engineering.selectedIds.has(model.id)).length;
+  const selectAll = $('#engineeringSelectAll');
+  selectAll.disabled = engineering.busy || !visible.length;
+  selectAll.checked = visible.length > 0 && count === visible.length;
+  selectAll.indeterminate = count > 0 && count < visible.length;
+  $('#engineeringSelectionCount').textContent = count ? `已选 ${count}` : '';
+  const button = $('#engineeringRemoveSelected');
+  button.disabled = engineering.busy || !count;
+  if (button.getAttribute('aria-busy') !== 'true') button.textContent = count ? `批量移除 (${count})` : '批量移除';
+  $('#engineeringList').querySelectorAll('[data-engineering-check]').forEach(checkbox=>{
+    checkbox.checked = engineering.selectedIds.has(checkbox.dataset.engineeringCheck);
+    checkbox.disabled = engineering.busy;
+    checkbox.closest('.engineering-row').classList.toggle('checked',checkbox.checked);
+  });
 }
 
 function clearEngineeringDetail() {
@@ -107,21 +132,28 @@ async function fillEngineeringDetail() {
 async function engineeringAction(button, action, payload={}) {
   if (engineering.busy) return;
   engineering.busy = true; setBusy(button,true,'处理中…');
+  syncEngineeringSelectionControls();
   const kind = engineering.kind;
   const selectedId = engineering.selectedId;
   try {
     const result = await engineeringApi(action,{kind,id:selectedId,...payload});
     if (result.cancelled) return;
     if (action === 'remove' || (action === 'update' && payload.changes?.notes !== undefined)) engineeringDrafts.delete(`${kind}:${selectedId}`);
-    if (kind === engineering.kind && ['add','scan','update','remove'].includes(action)) {
+    if (action === 'batch-delete') {
+      for (const id of payload.ids) engineeringDrafts.delete(`${kind}:${id}`);
+      if (kind === engineering.kind) engineering.selectedIds.clear();
+    }
+    if (kind === engineering.kind && ['add','scan','update','remove','batch-delete'].includes(action)) {
       if (action === 'add') engineering.selectedId = result.id;
       await loadEngineering(kind);
     }
-    if (action === 'scan') showToast(`扫描完成：新增 ${result.added}，已存在 ${result.existing}${result.errors.length ? '；部分路径无法读取' : ''}`);
+    if (action === 'batch-delete') showToast(`已移除 ${result.deleted} 条模型索引，原模型和结果文件未删除`);
+    else if (action === 'scan') showToast(`扫描完成：新增 ${result.added}，已存在 ${result.existing}${result.errors.length ? '；部分路径无法读取' : ''}`);
     else showToast(result.message || ({add:'已添加模型索引',update:'已保存',remove:'已移除索引，原文件保留',reveal:'已定位文件'})[action] || '操作完成');
   } catch (error) { remoteError(error.message,'#engineeringError'); }
   finally {
     engineering.busy = false; setBusy(button,false);
+    syncEngineeringSelectionControls();
     const selected = engineering.models.find(m=>m.id === engineering.selectedId);
     $('#engineeringOpen').disabled = !selected?.exists;
     $('#engineeringOpenResults').disabled = !selected?.exists || !$('#engineeringResult').value;
@@ -133,6 +165,28 @@ async function engineeringAction(button, action, payload={}) {
 $('#engineeringList').addEventListener('click', event=>{
   const row = event.target.closest('[data-engineering-id]'); if (!row || engineering.busy) return;
   engineering.selectedId = row.dataset.engineeringId; renderEngineering();
+});
+$('#engineeringList').addEventListener('change',event=>{
+  const checkbox = event.target.closest('[data-engineering-check]');
+  if (!checkbox || engineering.busy) return;
+  const id = checkbox.dataset.engineeringCheck;
+  if (checkbox.checked) engineering.selectedIds.add(id);
+  else engineering.selectedIds.delete(id);
+  syncEngineeringSelectionControls();
+});
+$('#engineeringSelectAll').addEventListener('change',event=>{
+  if (engineering.busy) return;
+  for (const model of filteredEngineeringModels()) {
+    if (event.currentTarget.checked) engineering.selectedIds.add(model.id);
+    else engineering.selectedIds.delete(model.id);
+  }
+  syncEngineeringSelectionControls();
+});
+$('#engineeringRemoveSelected').addEventListener('click',event=>{
+  if (engineering.busy) return;
+  const ids = filteredEngineeringModels().map(model=>model.id).filter(id=>engineering.selectedIds.has(id));
+  if (!ids.length || !confirm(`从 ${engineeringNames[engineering.kind]} 模型索引批量移除选中的 ${ids.length} 条记录？\n不会删除原模型和结果文件。`)) return;
+  engineeringAction(event.currentTarget,'batch-delete',{ids});
 });
 $('#engineeringForm').addEventListener('input',()=>{
   if (engineering.selectedId) engineeringDrafts.set(`${engineering.kind}:${engineering.selectedId}`,
